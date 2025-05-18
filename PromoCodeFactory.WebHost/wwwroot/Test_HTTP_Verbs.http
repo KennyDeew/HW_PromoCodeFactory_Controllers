@@ -1,0 +1,5 @@
+@baseURL = https://localhost:5001
+
+###
+GET {{baseURL}}/api/v1/Employees
+
