@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain.Administration;
 using PromoCodeFactory.WebHost.Models;
+using PromoCodeFactory.WebHost.Request;
 
 namespace PromoCodeFactory.WebHost.Controllers
 {
@@ -69,6 +70,61 @@ namespace PromoCodeFactory.WebHost.Controllers
             };
 
             return employeeModel;
+        }
+
+        /// <summary>
+        /// Получить неполные данные сотрудника по Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("short/{id:guid}", Name = "GetEmployeeShort")]
+        [ProducesResponseType(typeof(EmployeeShortResponse), 200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<EmployeeShortResponse>> GetShortEmployeeByIdAsync(Guid id)
+        {
+            var employee = await _employeeRepository.GetByIdAsync(id);
+
+            if (employee == null)
+                return NotFound();
+
+            var employeeModel = new EmployeeShortResponse()
+            {
+                Id = employee.Id,
+                Email = employee.Email,
+                FullName = employee.FullName,
+            };
+
+            return Ok(employeeModel);
+        }
+
+        /// <summary>
+        /// Добавить нового сотрудника
+        /// </summary>
+        /// <param name="employeeRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(typeof(EmployeeResponse), 201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult> CreateEmployeeAsync(CreateEmployeeRequest employeeRequest)
+        {
+            var employee = new Employee()
+            {
+                Id = Guid.NewGuid(),
+                Email = employeeRequest.Email,
+                Roles = new List<Role>(),
+                FirstName = employeeRequest.FirstName,
+                LastName = employeeRequest.SecondName,
+                AppliedPromocodesCount = employeeRequest.AppliedPromocodesCount
+            };
+            var createdEmployee = await _employeeRepository.CreateAsync(employee);
+            if (createdEmployee == null) return Problem("Не удалось создать сотрудника");
+            var employeeShortResponse = new EmployeeShortResponse()
+            {
+                Id= createdEmployee.Id,
+                Email = createdEmployee.Email,
+                FullName = createdEmployee.FullName,
+            };
+
+            return CreatedAtRoute("GetEmployeeShort", new { id = createdEmployee.Id }, employeeShortResponse);
         }
     }
 }
