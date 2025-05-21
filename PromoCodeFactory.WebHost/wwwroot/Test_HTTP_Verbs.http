@@ -3,3 +3,13 @@
 ###
 GET {{baseURL}}/api/v1/Employees
 
+###
+POST {{baseURL}}/api/v1/Employees
+Content-Type: application/json
+
+{
+  "firstName": "Ivan",
+  "secondName": "Petrov",
+  "email": "Petrov@somemail.ru",
+  "appliedPromocodesCount": 0
+}
