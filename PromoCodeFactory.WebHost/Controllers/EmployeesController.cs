@@ -119,7 +119,7 @@ namespace PromoCodeFactory.WebHost.Controllers
             if (createdEmployee == null) return Problem("Не удалось создать сотрудника");
             var employeeShortResponse = new EmployeeShortResponse()
             {
-                Id= createdEmployee.Id,
+                Id = createdEmployee.Id,
                 Email = createdEmployee.Email,
                 FullName = createdEmployee.FullName,
             };
@@ -145,6 +145,17 @@ namespace PromoCodeFactory.WebHost.Controllers
 
             _employeeRepository.Update(employeeExist);
             return Ok(id);
+        }
+
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            _employeeRepository.Delete(id);
+            return NoContent();
+
         }
     }
 }

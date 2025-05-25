@@ -41,5 +41,10 @@ namespace PromoCodeFactory.DataAccess.Repositories
             }
             Data = dataList.AsEnumerable();
         }
+
+        public void Delete(Guid id)
+        {
+            Data = Data.Where(T => T.Id != id);
+        }
     }
 }
