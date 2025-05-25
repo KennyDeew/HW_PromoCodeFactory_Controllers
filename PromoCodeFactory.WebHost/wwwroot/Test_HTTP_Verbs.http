@@ -13,3 +13,14 @@ Content-Type: application/json
   "email": "Petrov@somemail.ru",
   "appliedPromocodesCount": 0
 }
+
+###
+PUT {{baseURL}}/api/v1/Employees/f766e2bf-340a-46ea-bff3-f1700b435895
+Content-Type: application/json
+
+{
+  "firstName": "Петя",
+  "lastName": "Андреев",
+  "email": "andreevNew@somemail.ru",
+  "appliedPromocodesCount": 5
+}
