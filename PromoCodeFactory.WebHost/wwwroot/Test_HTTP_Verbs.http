@@ -9,7 +9,7 @@ Content-Type: application/json
 
 {
   "firstName": "Ivan",
-  "secondName": "Petrov",
+  "lastName": "Petrov",
   "email": "Petrov@somemail.ru",
   "appliedPromocodesCount": 0
 }
@@ -24,3 +24,6 @@ Content-Type: application/json
   "email": "andreevNew@somemail.ru",
   "appliedPromocodesCount": 5
 }
+
+###
+DELETE {{baseURL}}/api/v1/Employees/f766e2bf-340a-46ea-bff3-f1700b435895
