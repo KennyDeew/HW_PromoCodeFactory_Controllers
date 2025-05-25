@@ -12,5 +12,7 @@ namespace PromoCodeFactory.Core.Abstractions.Repositories
         Task<T> GetByIdAsync(Guid id);
 
         Task<T> CreateAsync(T entity);
+
+        void Update(T entity);
     }
 }

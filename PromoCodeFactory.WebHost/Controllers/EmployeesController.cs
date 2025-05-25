@@ -112,7 +112,7 @@ namespace PromoCodeFactory.WebHost.Controllers
                 Email = employeeRequest.Email,
                 Roles = new List<Role>(),
                 FirstName = employeeRequest.FirstName,
-                LastName = employeeRequest.SecondName,
+                LastName = employeeRequest.LastName,
                 AppliedPromocodesCount = employeeRequest.AppliedPromocodesCount
             };
             var createdEmployee = await _employeeRepository.CreateAsync(employee);
@@ -125,6 +125,26 @@ namespace PromoCodeFactory.WebHost.Controllers
             };
 
             return CreatedAtRoute("GetEmployeeShort", new { id = createdEmployee.Id }, employeeShortResponse);
+        }
+
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Update(Guid id, UpdateEmployeeRequest request)
+        {
+            var employeeExist = await _employeeRepository.GetByIdAsync(id);
+
+            if (employeeExist == null)
+                return NotFound();
+
+            employeeExist.Email = request.Email;
+            employeeExist.FirstName = request.FirstName;
+            employeeExist.LastName = request.LastName;
+            employeeExist.AppliedPromocodesCount = request.AppliedPromocodesCount;
+
+            _employeeRepository.Update(employeeExist);
+            return Ok(id);
         }
     }
 }
